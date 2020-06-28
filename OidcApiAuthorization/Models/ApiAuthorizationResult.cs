@@ -1,4 +1,7 @@
-﻿namespace OidcApiAuthorization.Models
+﻿using System.Collections.Generic;
+using System.Security.Claims;
+
+namespace OidcApiAuthorization.Models
 {
     /// <summary>
     /// Encapsulates the results of an API authorization.
@@ -8,8 +11,12 @@
         /// <summary>
         /// Constructs a success authorization.
         /// </summary>
-        public ApiAuthorizationResult()
+        /// <param name="claims">
+        /// The claims from the validated JWT token.
+        /// </param>
+        public ApiAuthorizationResult(IEnumerable<Claim> claims)
         {
+            Claims = claims;
         }
 
         /// <summary>
@@ -22,6 +29,12 @@
         {
             FailureReason = failureReason;
         }
+
+        /// <summary>
+        /// The claims from the validated JWT token.
+        /// Empty list of no claims, or validation failed.
+        /// </summary>
+        public IEnumerable<Claim> Claims { get; set; } = new List<Claim>();
 
         /// <summary>
         /// True if authorization failed.

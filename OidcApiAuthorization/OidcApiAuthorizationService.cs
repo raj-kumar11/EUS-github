@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -63,6 +64,8 @@ namespace OidcApiAuthorization
 
             int validationRetryCount = 0;
 
+            IEnumerable<Claim> claims = null;
+
             do
             {
                 IEnumerable<SecurityKey> isserSigningKeys;
@@ -99,7 +102,7 @@ namespace OidcApiAuthorization
                     };
 
                     // Throws if the the token cannot be validated.
-                    _jwtSecurityTokenHandlerWrapper.ValidateToken(
+                    claims = _jwtSecurityTokenHandlerWrapper.ValidateToken(
                         authorizationBearerToken,
                         tokenValidationParameters);
 
@@ -129,7 +132,7 @@ namespace OidcApiAuthorization
             } while (!isTokenValid && validationRetryCount <= 1);
 
             // Success result.
-            return new ApiAuthorizationResult();
+            return new ApiAuthorizationResult(claims);
         }
 
         public async Task<HealthCheckResult> HealthCheckAsync()

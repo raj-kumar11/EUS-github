@@ -110,6 +110,8 @@ namespace OidcApiAuthorizationServiceTests
             Assert.Equal(1, fakeJwtSecurityTokenHandlerWrapper.ValidateTokenCalledCount);
 
             Assert.Equal(0, fakeOidcConfigurationManager.RequestRefreshCalledCount);
+
+            Assert.Empty(result.Claims);
         }
 
         [Fact]
@@ -147,6 +149,8 @@ namespace OidcApiAuthorizationServiceTests
             Assert.Equal(
                 "Authorization header is missing, invalid format, or is not a Bearer token.",
                 result.FailureReason);
+
+            Assert.Empty(result.Claims);
         }
 
         [Fact]
@@ -193,6 +197,8 @@ namespace OidcApiAuthorizationServiceTests
             Assert.StartsWith(
                 "Problem getting signing keys from Open ID Connect provider (issuer).",
                 result.FailureReason);
+
+            Assert.Empty(result.Claims);
         }
 
         [Fact]

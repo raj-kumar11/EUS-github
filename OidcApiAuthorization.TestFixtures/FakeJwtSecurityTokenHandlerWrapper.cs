@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using OidcApiAuthorization.Abstractions;
@@ -7,6 +8,8 @@ namespace OidcApiAuthorization.TestFixtures
 {
     public class FakeJwtSecurityTokenHandlerWrapper : IJwtSecurityTokenHandlerWrapper
     {
+        public IEnumerable<Claim> ClaimsToReturn { get; set; } = new List<Claim>();
+
         /// <summary>
         /// Indicates whether or not a SecurityTokenSignatureKeyNotFoundException
         /// should be thrown the first time that ValidateToken(..) is called.
@@ -19,7 +22,7 @@ namespace OidcApiAuthorization.TestFixtures
 
         // IJwtSecurityTokenHandlerWrapper members
 
-        public void ValidateToken(
+        public IEnumerable<Claim> ValidateToken(
             string token,
             TokenValidationParameters tokenValidationParameters)
         {
@@ -34,6 +37,8 @@ namespace OidcApiAuthorization.TestFixtures
             {
                 throw ExceptionToThrow;
             }
+
+            return ClaimsToReturn;
         }
     }
 }

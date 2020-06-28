@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using OidcApiAuthorization.Models;
@@ -51,7 +53,8 @@ namespace SampleFunctionApp.Tests
             var fakeApiAuthorization = new FakeApiAuthorizationService()
             {
                 // Setup to fake athuorization success.
-                ApiAuthorizationResultForTests = new ApiAuthorizationResult()
+                ApiAuthorizationResultForTests = new ApiAuthorizationResult(
+                    new List<Claim>())
             };
 
             string jsonBody = $"{{ \"name\": \"{ExpecetedName}\" }}";
@@ -90,7 +93,8 @@ namespace SampleFunctionApp.Tests
             var fakeApiAuthorizationService = new FakeApiAuthorizationService()
             {
                 // Setup to fake athuorization success.
-                ApiAuthorizationResultForTests = new ApiAuthorizationResult()
+                ApiAuthorizationResultForTests = new ApiAuthorizationResult(
+                    new List<Claim>())
             };
 
             HttpRequest httpRequest = HttpRequestFactoryFixture.CreateHttpPostRequest(

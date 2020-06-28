@@ -1,10 +1,11 @@
-﻿using System.Security.Claims;
+﻿using System.Collections.Generic;
+using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 
 namespace OidcApiAuthorization.Abstractions
 {
     public interface IJwtSecurityTokenHandlerWrapper
     {
-        void ValidateToken(string token, TokenValidationParameters tokenValidationParameters);
+        IEnumerable<Claim> ValidateToken(string token, TokenValidationParameters tokenValidationParameters);
     }
 }

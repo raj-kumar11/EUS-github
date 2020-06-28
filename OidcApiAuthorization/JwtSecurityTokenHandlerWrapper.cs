@@ -1,4 +1,6 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using OidcApiAuthorization.Abstractions;
 
@@ -16,7 +18,10 @@ namespace OidcApiAuthorization
         /// <param name="tokenValidationParameters">
         /// Contains parameters used in the validation of the token.
         /// </param>
-        public void ValidateToken(
+        /// <returns>
+        /// Returns the claims from the given JWT token.
+        /// </returns>
+        public IEnumerable<Claim> ValidateToken(
             string token,
             TokenValidationParameters tokenValidationParameters)
         {
@@ -29,6 +34,10 @@ namespace OidcApiAuthorization
                 token,
                 tokenValidationParameters,
                 out _); // Discard the output SecurityToken. We don't need it.
+
+            JwtSecurityToken jwtSecurityTotken = handler.ReadJwtToken(token);
+
+            return jwtSecurityTotken.Claims;
         }
     }
 }
